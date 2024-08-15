@@ -48,10 +48,30 @@ impl Solution {
         }
         return (i + 1) as i32;
     }
+
+    //single-number - can't wait to look up the hyper-optimised version of this :/
+    pub fn single_number(mut nums: Vec<i32>) -> i32 {
+        if nums.len() == 1 {
+            return nums[0];
+        }
+        nums.sort();
+        for i in 1..(nums.len() - 1) {
+            if nums[i] != nums[i - 1] && nums[i] != nums[i + 1] {
+                return nums[i];
+            }
+        }
+        if nums[0] != nums[1] {
+            return nums[0];
+        }
+        if nums[nums.len() - 1] != nums[nums.len() - 2] {
+            return nums[nums.len() - 1];
+        }
+        return nums[0];
+    }
 }
 
 fn main() {
-    let leetcode_problem = String::from("remove-duplicates-from-sorted-arrays");
+    let leetcode_problem = String::from("single-number");
 
     match leetcode_problem.as_str() {
         "contains-duplicates" => {
@@ -75,6 +95,11 @@ fn main() {
         "best-time-to-buy-and-sell-stocks-II" => {
             let prices = [7, 1, 5, 3, 6, 4].to_vec();
             let result: i32 = Solution::max_profit(prices);
+            println!("Result: {}", result);
+        }
+        "single-number" => {
+            let nums = [4, 1, 2, 1, 2].to_vec();
+            let result = Solution::single_number(nums);
             println!("Result: {}", result);
         }
         _ => {
