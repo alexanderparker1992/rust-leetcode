@@ -68,12 +68,41 @@ impl Solution {
         }
         return nums[0];
     }
+
+    pub fn intersect(mut nums1: Vec<i32>, mut nums2: Vec<i32>) -> Vec<i32> {
+        let mut i = 0;
+        let mut j = 0;
+        nums1.sort();
+        nums2.sort();
+        let mut nums_intersect = vec![];
+        while i < nums1.len() && j < nums2.len() {
+            if nums1[i] == nums2[j] {
+                nums_intersect.push(nums1[i]);
+                i += 1;
+                j += 1;
+            }
+            else if nums1[i] > nums2[j] {
+                j += 1;
+            }
+            else if nums1[i] < nums2[j] {
+                i += 1;
+            }
+        }
+        return nums_intersect;
+    }
 }
 
 fn main() {
-    let leetcode_problem = String::from("single-number");
+    let leetcode_problem = String::from("intersection-of-two-arrays-II");
 
     match leetcode_problem.as_str() {
+        "intersection-of-two-arrays-II" => {
+            let num2 = [4, 9, 5].to_vec();
+            let num1 = [9, 4, 9, 8, 4].to_vec();
+            let sol = Solution::intersect(num1, num2);
+            println!("Result: {:?}", sol);
+        }
+
         "contains-duplicates" => {
             let nums = [1, 2, 2, 3, 4, 5, 6, 7].to_vec();
             let sol = Solution::contains_duplicate(nums);
