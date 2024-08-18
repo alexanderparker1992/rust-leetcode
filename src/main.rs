@@ -80,22 +80,69 @@ impl Solution {
                 nums_intersect.push(nums1[i]);
                 i += 1;
                 j += 1;
-            }
-            else if nums1[i] > nums2[j] {
+            } else if nums1[i] > nums2[j] {
                 j += 1;
-            }
-            else if nums1[i] < nums2[j] {
+            } else if nums1[i] < nums2[j] {
                 i += 1;
             }
         }
         return nums_intersect;
     }
+
+    pub fn plus_one(mut digits: Vec<i32>) -> Vec<i32> {
+        let mut carry: bool = true;
+        for i in (0..digits.len()).rev() {
+            if i == digits.len() - 1 && digits[i] == 9 {
+                digits[i] = 0;
+                carry = true;
+            } else if digits[i] == 9 && carry {
+                digits[i] = 0;
+            } else if carry {
+                digits[i] = digits[i] + 1;
+                carry = false;
+            }
+        }
+        if carry {
+            digits.insert(0, 1)
+        }
+
+        return digits;
+    }
+
+    pub fn move_zeroes(nums: &mut Vec<i32>) {
+        let mut i = 0;
+        let mut j = nums.len();
+        while i < nums.len() && i < j + 1 {
+            if nums[i] == 0 {
+                nums.remove(i);
+                nums.push(0);
+                j -= 1;
+                if i > 0 {
+                    i -= 1
+                };
+            } else {
+                i += 1
+            }
+        }
+    }
 }
 
 fn main() {
-    let leetcode_problem = String::from("intersection-of-two-arrays-II");
+    let leetcode_problem = String::from("move-zeroes");
 
     match leetcode_problem.as_str() {
+        "move-zeroes" => {
+            let mut nums = [0, 0, 1].to_vec();
+            Solution::move_zeroes(&mut nums);
+            println!("Result: {:?}", nums);
+        }
+
+        "plus-one" => {
+            let digits = [9, 9, 9].to_vec();
+            let sol = Solution::plus_one(digits);
+            println!("Result: {:?}", sol);
+        }
+
         "intersection-of-two-arrays-II" => {
             let num2 = [4, 9, 5].to_vec();
             let num1 = [9, 4, 9, 8, 4].to_vec();
