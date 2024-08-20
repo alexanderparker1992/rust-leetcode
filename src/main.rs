@@ -125,12 +125,90 @@ impl Solution {
             }
         }
     }
+
+    pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
+        let mut map = std::collections::HashMap::new();
+        for (i, num) in nums.iter().enumerate() {
+            let complement = target - num;
+            if let Some(&index) = map.get(&complement) {
+                return vec![index as i32, i as i32];
+            }
+            map.insert(num, i);
+        }
+        vec![]
+    }
+
+    pub fn is_valid_sudoku(board: Vec<Vec<char>>) -> bool {
+        // rows
+        for i in 0..9 {
+            let mut row_set = std::collections::HashSet::new();
+            for j in 0..9 {
+                if board[i][j] != '.' as char {
+                    if !row_set.insert(board[i][j]) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        // cols
+        for j in 0..9 {
+            let mut col_set = std::collections::HashSet::new();
+            for i in 0..9 {
+                if board[i][j] != '.' {
+                    if !col_set.insert(board[i][j]) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        // sub boxes
+        for chunk in 0..9 {
+            let mut sub_boxes = std::collections::HashSet::new();
+            let start_row = (chunk / 3) * 3;
+            let start_col = (chunk % 3) * 3;
+            for i in start_row..start_row + 3 {
+                for j in start_col..start_col + 3 {
+                    if board[i][j] != '.' {
+                        if !sub_boxes.insert(board[i][j]) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
 }
 
 fn main() {
-    let leetcode_problem = String::from("move-zeroes");
+    let leetcode_problem: String = String::from("valid-soduko");
 
     match leetcode_problem.as_str() {
+        "valid-soduko" => {
+            let board: Vec<Vec<char>> = vec![
+                vec!['8', '3', '.', '.', '7', '.', '.', '.', '.'],
+                vec!['6', '.', '.', '1', '9', '5', '.', '.', '.'],
+                vec!['.', '9', '8', '.', '.', '.', '.', '6', '.'],
+                vec!['8', '.', '.', '.', '6', '.', '.', '.', '3'],
+                vec!['4', '.', '.', '8', '.', '3', '.', '.', '1'],
+                vec!['7', '.', '.', '.', '2', '.', '.', '.', '6'],
+                vec!['.', '6', '.', '.', '.', '.', '2', '8', '.'],
+                vec!['.', '.', '.', '4', '1', '9', '.', '.', '5'],
+                vec!['.', '.', '.', '.', '8', '.', '.', '7', '9'],
+            ];
+            let output: bool = Solution::is_valid_sudoku(board);
+            println!("Result: {}", output);
+        }
+        "two-sums" => {
+            let nums = [2, 7, 11, 15].to_vec();
+            let target = 9;
+            let result = Solution::two_sum(nums, target);
+            println!("Result: {:?}", result);
+        }
+
         "move-zeroes" => {
             let mut nums = [0, 0, 1].to_vec();
             Solution::move_zeroes(&mut nums);
