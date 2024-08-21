@@ -1,7 +1,6 @@
 struct Solution;
 
 impl Solution {
-    // rotate-array
     pub fn rotate(nums: &mut Vec<i32>, k: i32) {
         let k = k as usize;
         let n = nums.len();
@@ -14,7 +13,6 @@ impl Solution {
         nums[k..].reverse();
     }
 
-    // best-time-to-buy-and-sell-stocks-II
     pub fn max_profit(prices: Vec<i32>) -> i32 {
         let mut profit = 0;
         for i in 1..prices.len() {
@@ -25,7 +23,6 @@ impl Solution {
         return profit;
     }
 
-    // contains-duplicates
     pub fn contains_duplicate(mut nums: Vec<i32>) -> bool {
         nums.sort();
 
@@ -37,7 +34,6 @@ impl Solution {
         false
     }
 
-    // remove-duplicates-from-sorted-arrays
     pub fn remove_duplicates(nums: &mut Vec<i32>) -> i32 {
         let mut i = 0;
         for j in 1..nums.len() {
@@ -49,7 +45,6 @@ impl Solution {
         return (i + 1) as i32;
     }
 
-    //single-number - can't wait to look up the hyper-optimised version of this :/
     pub fn single_number(mut nums: Vec<i32>) -> i32 {
         if nums.len() == 1 {
             return nums[0];
@@ -181,12 +176,34 @@ impl Solution {
 
         return true;
     }
+
+    pub fn rotate_matrix(matrix: &mut Vec<Vec<i32>>) {
+        let n = matrix.len();
+        for i in 0..n {
+            for j in i+1..n {
+                let temp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = temp;
+            }
+        }
+        for row in matrix.iter_mut() {
+            row.reverse();
+        }
+ 
+        
+    }
 }
 
 fn main() {
-    let leetcode_problem: String = String::from("valid-soduko");
+    let leetcode_problem: String = String::from("rotate-matrix");
 
     match leetcode_problem.as_str() {
+        "rotate-matrix" => {
+            let mut matrix: Vec<Vec<i32>> =
+                [[1, 2, 3].to_vec(), [4, 5, 6].to_vec(), [7, 8, 9].to_vec()].to_vec();
+            Solution::rotate_matrix(&mut matrix);
+            println!("Result: {:?}", matrix);
+        }
         "valid-soduko" => {
             let board: Vec<Vec<char>> = vec![
                 vec!['8', '3', '.', '.', '7', '.', '.', '.', '.'],
@@ -202,35 +219,36 @@ fn main() {
             let output: bool = Solution::is_valid_sudoku(board);
             println!("Result: {}", output);
         }
+
         "two-sums" => {
-            let nums = [2, 7, 11, 15].to_vec();
-            let target = 9;
-            let result = Solution::two_sum(nums, target);
+            let nums: Vec<i32> = [2, 7, 11, 15].to_vec();
+            let target: i32 = 9;
+            let result: Vec<i32> = Solution::two_sum(nums, target);
             println!("Result: {:?}", result);
         }
 
         "move-zeroes" => {
-            let mut nums = [0, 0, 1].to_vec();
+            let mut nums: Vec<i32> = [0, 0, 1].to_vec();
             Solution::move_zeroes(&mut nums);
             println!("Result: {:?}", nums);
         }
 
         "plus-one" => {
-            let digits = [9, 9, 9].to_vec();
-            let sol = Solution::plus_one(digits);
+            let digits: Vec<i32> = [9, 9, 9].to_vec();
+            let sol: Vec<i32> = Solution::plus_one(digits);
             println!("Result: {:?}", sol);
         }
 
         "intersection-of-two-arrays-II" => {
-            let num2 = [4, 9, 5].to_vec();
-            let num1 = [9, 4, 9, 8, 4].to_vec();
-            let sol = Solution::intersect(num1, num2);
+            let num2: Vec<i32> = [4, 9, 5].to_vec();
+            let num1: Vec<i32> = [9, 4, 9, 8, 4].to_vec();
+            let sol: Vec<i32> = Solution::intersect(num1, num2);
             println!("Result: {:?}", sol);
         }
 
         "contains-duplicates" => {
-            let nums = [1, 2, 2, 3, 4, 5, 6, 7].to_vec();
-            let sol = Solution::contains_duplicate(nums);
+            let nums: Vec<i32> = [1, 2, 2, 3, 4, 5, 6, 7].to_vec();
+            let sol: bool = Solution::contains_duplicate(nums);
             println!("{}", sol);
         }
 
@@ -242,22 +260,21 @@ fn main() {
         }
 
         "rotate-array" => {
-            let mut nums = vec![1, 2, 3, 4, 5, 6, 7];
+            let mut nums: Vec<i32> = vec![1, 2, 3, 4, 5, 6, 7];
             Solution::rotate(&mut nums, 3);
             println!("Modified Array: {:?}", nums);
         }
         "best-time-to-buy-and-sell-stocks-II" => {
-            let prices = [7, 1, 5, 3, 6, 4].to_vec();
+            let prices: Vec<i32> = [7, 1, 5, 3, 6, 4].to_vec();
             let result: i32 = Solution::max_profit(prices);
             println!("Result: {}", result);
         }
         "single-number" => {
-            let nums = [4, 1, 2, 1, 2].to_vec();
-            let result = Solution::single_number(nums);
+            let nums: Vec<i32> = [4, 1, 2, 1, 2].to_vec();
+            let result: i32 = Solution::single_number(nums);
             println!("Result: {}", result);
         }
         _ => {
-            // Default case
             println!("Congratulations, you've finished leetcode");
         }
     }
