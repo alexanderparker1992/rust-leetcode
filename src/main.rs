@@ -177,27 +177,47 @@ impl Solution {
         return true;
     }
 
+    // used a hint but was halfway there, tried to do both operations in one loop. Separating the transpose and THEN
+    // flipping the rows helps. Doing it in one row is possible but complicated.
     pub fn rotate_matrix(matrix: &mut Vec<Vec<i32>>) {
+        // transpose
         let n = matrix.len();
         for i in 0..n {
-            for j in i+1..n {
+            for j in i + 1..n {
                 let temp = matrix[i][j];
                 matrix[i][j] = matrix[j][i];
                 matrix[j][i] = temp;
             }
         }
+
+        // reverse each row
         for row in matrix.iter_mut() {
             row.reverse();
         }
- 
-        
+    }
+
+    pub fn reverse_string(s: &mut Vec<char>) {
+        let mut i = 0;
+        let mut j = s.len() - 1;
+        while i < j {
+            let temp = s[i];
+            s[i] = s[j];
+            s[j] = temp;
+            i += 1;
+            j -= 1;
+        }
     }
 }
 
 fn main() {
-    let leetcode_problem: String = String::from("rotate-matrix");
+    let leetcode_problem: String = String::from("reverse-string");
 
     match leetcode_problem.as_str() {
+        "reverse-string" => {
+            let mut input: Vec<char> = ['h', 'e', 'l', 'l', 'o'].to_vec();
+            Solution::reverse_string(&mut input);
+            println!("Result: {:?}", input);
+        }
         "rotate-matrix" => {
             let mut matrix: Vec<Vec<i32>> =
                 [[1, 2, 3].to_vec(), [4, 5, 6].to_vec(), [7, 8, 9].to_vec()].to_vec();
