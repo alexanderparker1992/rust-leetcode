@@ -200,30 +200,68 @@ impl Solution {
         let mut i = 0;
         let mut j = s.len() - 1;
         while i < j {
-            let temp = s[i];
-            s[i] = s[j];
-            s[j] = temp;
+            s.swap(i,j); // remember to use swap when doing these double pointer operations
             i += 1;
             j -= 1;
         }
     }
+
+    pub fn reverse_integer(x: i32) -> i32 {
+        let mut reversed_number: i32 = x;
+        let mut negative: bool = false;
+
+        if x < 0 {
+            negative = true;
+            reversed_number = -x;
+        }
+
+        if x % 10 == 0 {
+            reversed_number = reversed_number / 10;
+        }
+
+        let mut digits: Vec<i32> = Vec::new();
+        while reversed_number > 0 {
+            digits.push(reversed_number % 10);
+            reversed_number /= 10;
+        }
+
+        let mut result: i32 = 0;
+        for digit in digits {
+            result = result * 10 + digit;
+        }
+
+        if negative {
+            result = -result;
+        }
+
+        return result;
+    }
+
 }
 
 fn main() {
-    let leetcode_problem: String = String::from("reverse-string");
+    let leetcode_problem: String = String::from("reverse-integer");
 
     match leetcode_problem.as_str() {
+        "reverse-integer" => {
+            let x = -1230;
+            let sol = Solution::reverse_integer(x);
+            println!("Result: {}", sol);
+        }
+
         "reverse-string" => {
             let mut input: Vec<char> = ['h', 'e', 'l', 'l', 'o'].to_vec();
             Solution::reverse_string(&mut input);
             println!("Result: {:?}", input);
         }
+
         "rotate-matrix" => {
             let mut matrix: Vec<Vec<i32>> =
                 [[1, 2, 3].to_vec(), [4, 5, 6].to_vec(), [7, 8, 9].to_vec()].to_vec();
             Solution::rotate_matrix(&mut matrix);
             println!("Result: {:?}", matrix);
         }
+
         "valid-soduko" => {
             let board: Vec<Vec<char>> = vec![
                 vec!['8', '3', '.', '.', '7', '.', '.', '.', '.'],
