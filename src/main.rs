@@ -200,7 +200,7 @@ impl Solution {
         let mut i = 0;
         let mut j = s.len() - 1;
         while i < j {
-            s.swap(i,j); // remember to use swap when doing these double pointer operations
+            s.swap(i, j); // remember to use swap when doing these double pointer operations
             i += 1;
             j -= 1;
         }
@@ -227,7 +227,17 @@ impl Solution {
 
         let mut result: i32 = 0;
         for digit in digits {
-            result = result * 10 + digit;
+            // Check if multiplying by 10 will cause overflow
+            if let Some(new_result) = result.checked_mul(10) {
+                // Check if adding the digit will cause overflow
+                if let Some(new_result) = new_result.checked_add(digit) {
+                    result = new_result;
+                } else {
+                    return 0; // Overflow occurred, return 0
+                }
+            } else {
+                return 0; // Overflow occurred, return 0
+            }
         }
 
         if negative {
@@ -237,12 +247,38 @@ impl Solution {
         return result;
     }
 
+    pub fn first_unique_character(s: String) -> i32 {
+        let mut chars: Vec<char> = s.chars().collect();
+        for i in 0..chars.len() {
+            if chars[i] == '0' {
+                continue;
+            }
+            let mut is_unique: bool = true;
+            for j in i + 1..chars.len() {
+                if chars[i] == chars[j] {
+                    is_unique = false;
+                    chars[j] = '0';
+                }
+            }
+            if is_unique {
+                return i as i32;
+            }
+            chars[i] = '0';
+        }
+        return -1;
+    }
 }
 
 fn main() {
-    let leetcode_problem: String = String::from("reverse-integer");
+    let leetcode_problem: String = String::from("first-unique-character");
 
     match leetcode_problem.as_str() {
+        "first-unique-character" => {
+            let s: &str = "aabbc";
+            let sol: i32 = Solution::first_unique_character(String::from(s));
+            println!("Result: {}", sol);
+        }
+
         "reverse-integer" => {
             let x = -1230;
             let sol = Solution::reverse_integer(x);
