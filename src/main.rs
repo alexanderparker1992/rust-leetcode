@@ -267,12 +267,71 @@ impl Solution {
         }
         return -1;
     }
+
+    pub fn is_anagram(s: String, t: String) -> bool {
+        use std::collections::HashMap;
+        if s.len() != t.len() {
+            return false;
+        }
+
+        let mut s_hashmap: HashMap<char, i32> = HashMap::new();
+        let mut t_hashmap: HashMap<char, i32> = HashMap::new();
+
+        for character in s.chars() {
+            *s_hashmap.entry(character).or_insert(0) += 1;
+        }
+
+        for character in t.chars() {
+            *t_hashmap.entry(character).or_insert(0) += 1;
+        }
+
+        for (key, val) in s_hashmap.iter() {
+            if t_hashmap.get(key) != Some(val) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    pub fn is_palindrome(s: String) -> bool {
+        let mut i = 0;
+        let mut j = s.len() - 1;
+        let s = s.chars().collect::<Vec<char>>();
+        while i < j {
+            if !s[i].is_alphanumeric() {
+                i += 1;
+            }
+            if !s[j].is_alphanumeric() {
+                j -= 1;
+            }
+            if s[i].to_ascii_lowercase() != s[j].to_ascii_lowercase() {
+                return false;
+            }
+            i += 1;
+            j -= 1;
+        }
+        return true;
+    }
 }
 
 fn main() {
-    let leetcode_problem: String = String::from("first-unique-character");
+    let leetcode_problem: String = String::from("valid-palindrome");
 
     match leetcode_problem.as_str() {
+        "valid-palindrome" => {
+            let s: &str = "A man, a plan, a canal: Panama";
+            let sol = Solution::is_palindrome(String::from(s));
+            println!("Result: {}", sol);
+        }
+
+        "valid-anagram" => {
+            let s: &str = "anagramx";
+            let t: &str = "nagaramx";
+            let sol = Solution::is_anagram(String::from(s), String::from(t));
+            println!("Result: {}", sol);
+        }
+
         "first-unique-character" => {
             let s: &str = "aabbc";
             let sol: i32 = Solution::first_unique_character(String::from(s));
